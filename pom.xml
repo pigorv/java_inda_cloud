@@ -27,5 +27,6 @@
     <modules>
         <module>pc</module>
         <module>po</module>
+        <module>eureka</module>
     </modules>
 </project>
