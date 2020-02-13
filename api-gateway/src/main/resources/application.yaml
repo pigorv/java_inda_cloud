@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: zuul
+
+zuul:
+  routes:
+    catalog:
+      path: /mycatalog/**
+    order:
+      path: /myorder/**
