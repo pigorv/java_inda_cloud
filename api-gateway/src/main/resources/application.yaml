@@ -1,9 +1,9 @@
-server:
-  port: 8080
-
 spring:
   application:
     name: zuul
+  cloud:
+    config:
+      enabled: false
 
 zuul:
   routes:
@@ -11,3 +11,18 @@ zuul:
       path: /mycatalog/**
     order:
       path: /myorder/**
+
+eureka:
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 1
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+    fetch-register: true
+    register-with-eureka: false
+    registryFetchIntervalSeconds: 1
+
+ribbon:
+  ConnectTimeout: 120000
+  ReadTimeout: 120000

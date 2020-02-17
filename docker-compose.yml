@@ -1,10 +1,44 @@
 version: '2'
 
 services:
+  eureka:
+    image: springcloud/eureka
+    ports:
+      - "8761:8761"
+
+  api-gateway:
+    build: api-gateway/
+    depends_on:
+      - catalog
+      - order
+    ports:
+      - "8080:8080"
+
   mongo:
     image: mongo
     ports:
       - "27017:27017"
+
+  catalog:
+    build: pc/
+    depends_on:
+      - mongo
+      - eureka
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongo
+    ports:
+      - "8081:8080"
+
+  order:
+    build: po/
+    depends_on:
+      - mongo
+      - eureka
+    environment:
+      SPRING_DATA_MONGODB_HOST: mongo
+    ports:
+      - "8082:8080"
+
 networks:
-    default:
-        driver: bridge
+  default:
+    driver: bridge
