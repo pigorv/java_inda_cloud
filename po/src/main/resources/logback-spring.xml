@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <springProfile name="fluent">
+        <property name="FLUENTD_HOSTNAME" value="localhost"/>
+        <property name="FLUENTD_ACK" value="true"/>
+
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <Pattern>
+                    %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n - %ex{20}
+                </Pattern>
+            </layout>
+        </appender>
+
+        <appender name="FLUENTD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>/opt/springboot/logs/application.order.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>/opt/springboot/logs/application.order.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>2</maxHistory>
+            </rollingPolicy>
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        </appender>
+
+        <logger name="org.springframework" level="INFO" additivity="false">
+            <appender-ref ref="FLUENTD"/>
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <logger name="org.nipu.po" level="INFO" additivity="false">
+            <appender-ref ref="FLUENTD"/>
+            <appender-ref ref="CONSOLE"/>
+        </logger>
+
+        <root level="INFO">
+            <appender-ref ref="FLUENTD"/>
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+</configuration>
